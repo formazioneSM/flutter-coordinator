@@ -2,6 +2,23 @@
 
 import 'package:flutter/material.dart';
 
+abstract class CoordinableStatelessWidget<T> extends StatelessWidget {
+  CoordinableStatelessWidget({super.key, required this.coordinator, this.dataModel});
+  final AppCoordinator coordinator;
+  T? dataModel;
+}
+
+class BaseCoordinator {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  void goToScreen(CoordinableStatelessWidget screen) {
+    navigatorKey.currentState?.push(
+      MaterialPageRoute(builder: (context) => screen),
+    );
+  }
+}
+
+// ESEMPIO DI UTILIZZO
+
 void main() {
   runApp(MyApp());
 }
@@ -20,23 +37,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-abstract class CoordinableStatelessWidget<T> extends StatelessWidget {
-  CoordinableStatelessWidget({super.key, required this.coordinator, this.dataModel});
-  final AppCoordinator coordinator;
-  T? dataModel;
-}
-
-class BaseCoordinator {
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  void goToScreen(CoordinableStatelessWidget screen) {
-    navigatorKey.currentState?.push(
-      MaterialPageRoute(builder: (context) => screen),
-    );
-  }
-}
-
-// ESEMPIO DI UTILIZZO
 
 class AppCoordinator extends BaseCoordinator {
   void goToScreen1() {
